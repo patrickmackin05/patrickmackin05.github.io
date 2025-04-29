@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSC2063/2025 Code Samples</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            margin-bottom: 20px;
+        }
+        .question-header {
+            font-weight: bold;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .solution-header {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSC2063: SERVICE-ORIENTED PROGRAMMING</h1>
+
+    <div class="question-header">Question 1: UML Design of Microservices</div>
+    <p><em>UML diagram showing relationships between:</em></p>
+    <ul>
+        <li>ms3.controller.StorageType</li>
+        <li>ms5.controller.Controller</li>
+        <li>ms25.model.FileStorage.FileStorage</li>
+        <li>ms10.model.io2Storage.CSStorage</li>
+        <li>ms25.model.Student</li>
+        <li>ms10.model.DataParser</li>
+    </ul>
+
+    <div class="question-header">Question 2: AI Microservice Decomposition</div>
+    <pre>• isc = (sim₁ᵐᵉᵗʳ(DataParser, FileStorage) + sim₁ᵐᵉᵗʳ(FileStorage, DataParser))/2 = 
+  (0.188235 + 0.0)/2 = 0.094117 → 0.09
+  ○ sim₁ᵐᵉᵗʳ (DataParser, FileStorage) = wₘₑₜᵣ * sim₁ = 0.8 * 4/17 = 0.8 * 
+    0.235294 = 0.188235
+  ○ sim₁ᵐᵉᵗʳ (FileStorage, DataParser) = wₘₑₜᵣ *sim₁ = 0.0 * 0.235294 = 0.0
+• esc = 0.788125 → 0.79 and is calculated as follows:
+
+1 - ((dₘᵍᶜₚᵉʳᶜₑₙᵗₑᵣ(FileStorage)+dₘᵍᶜₚᵉʳᶜₑₙᵗₑᵣ(DataParser))/2 + 
+    (dₘᵍᶜᵏₐᵗᶻ(FileStorage)+dₘᵍᶜₖₐₜᶻ(DataParser))/2) = 
+
+1 - ((0.6 + 0.867085)/2 + (0.0 + 0.163030)/2) = 1 - 0.423750/2 = 0.788125</pre>
+
+    <div class="question-header">Question 3: JAXB Serialization</div>
+    <pre>package q4;
+@XmlAccessorType(XmlAccessType.FIELD)</pre>
+
+    <div class="question-header">Question 4: XML Schema</div>
+    <pre>&lt;complexType name = "student">
+  &lt;all>
+    &lt;element name = "lastName" type = "string"/>
+    &lt;element name = "studiesMode">
+      &lt;simpleType>
+        &lt;restriction base = "string">
+          &lt;enumeration value = "partTime"/>
+          &lt;enumeration value = "fullTime"/>
+        &lt;/restriction>
+      &lt;/simpleType>
+    &lt;/element>
+    &lt;element name = "age">
+      &lt;complexType>
+        &lt;sequence>
+          &lt;element name = "dateOfBirth" type = "date"/>
+        &lt;/sequence>
+      &lt;/complexType>
+    &lt;/element>
+  &lt;/all>
+&lt;/complexType></pre>
+
+    <div class="question-header">Question 5: JSON</div>
+    <div class="solution-header">Solution1:</div>
+    <pre>package q6;
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+class Employee {
+    private String firstName, lastName;
+    Employee(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+
+package q6;
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+class Employees{
+    private static ArrayList&lt;Employee> employees;
+    public static void main(String[] args) throws JsonProcessingException{
+        Employee employee1 = new Employee("John", "Doe");
+        employees = new ArrayList&lt;Employee>();
+        employees.add(employee1);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(employees);
+        System.out.println(jsonString);
+    }
+}</pre>
+
+    <div class="solution-header">Solution2:</div>
+    <pre>package q6;
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+class Employee {
+    private String firstName, lastName;
+    Employee(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+
+package q6;
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+class Employees{
+    private static Employee[] employees;</pre>
+
+    <div class="question-header">XML Root Element Example</div>
+    <pre>@XmlRootElement
+class Student{
+    private String name;
+    private int age;
+    Student(){}
+    Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+private static final String JAXB_PATH = "Student.xml";
+public static void main(String[] args) throws JAXBException, IOException {
+    Student student1 = new Student("Tom", 20);
+    FileOutputStream outputStream = new FileOutputStream(JAXB_PATH);
+    JAXBContext jAXBContext = JAXBContext.newInstance(Student.class);
+    Marshaller m = jAXBContext.createMarshaller();
+    m.marshal(student1, outputStream);
+    outputStream.close();
+    FileInputStream inputStream = new FileInputStream(JAXB_PATH);
+    Unmarshaller u = jAXBContext.createUnmarshaller();
+    Student student2 = (Student) u.unmarshal(inputStream);
+    inputStream.close();
+    System.out.println("Name = " + student2.name + ", age = " + student2.age);
+}</pre>
+
+    <div class="question-header">Question 6: RESTful Web Services</div>
+    <pre>package q7;
+@Path("/q7")
+public class Organization {
+    @GET
+    @Path("/c/{u}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person getInfo(@PathParam("u") String username){
+        return new Person(username);
+    }
+}
+
+package q7;
+public class HttpGetWrapper {
+    public static void main(String[] args){
+        System.out.println(new HttpGetWrapper().
+            execute("http://localhost:8080/q7/c/Tom"));
+    }
+    public String execute(String url) {
+        String responseStr = "";
+        try {
+            CloseableHttpClient client = HttpClients.createDefault();
+            HttpGet get = new HttpGet(url);
+            CloseableHttpResponse response = client.execute(get);
+            int statusCode = response.getStatusLine().getStatusCode();
+            System.out.println("Status code of GET request = " + statusCode);
+            if(statusCode != 200) return null;
+            BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+            String line;
+            while ((line = rd.readLine()) != null) responseStr += line;
+            rd.close();
+            response.close();
+            client.close();
+        }
+        catch(IOException ex) { return null; }
+        return responseStr;
+    }
+}</pre>
+
+    <div class="question-header">Question 7: SOAP Web Services</div>
+    <pre>&lt;wsdl:types>
+    &lt;xs:schema xmlns:xs = "http://www.w3.org/2001/XMLSchema" targetNamespace = 
+"http://q8" version="1.0">
+        &lt;xs:element name="mergeRequest">
+            &lt;xs:complexType>
+                &lt;xs:sequence>
+                    &lt;xs:element name="b1" type="xs:int"/>
+                    &lt;xs:element name="b2" type="xs:int"/>
+                &lt;/xs:sequence>
+            &lt;/xs:complexType>
+        &lt;/xs:element>
+        &lt;xs:element name="mergeResponse">
+            &lt;xs:complexType>
+                &lt;xs:sequence>
+                    &lt;xs:element name="b" type="xs:int"/>
+                &lt;/xs:sequence>
+            &lt;/xs:complexType>
+        &lt;/xs:element>
+    &lt;/xs:schema>
+&lt;/wsdl:types>
+&lt;wsdl:message name="mergeRequest">
+    &lt;wsdl:part element="tns:mergeRequest" name="mergeRequest">
+    &lt;/wsdl:part>
+&lt;/wsdl:message>
+&lt;wsdl:message name="mergeResponse">
+    &lt;wsdl:part element="tns:mergeResponse" name="mergeResponse">
+    &lt;/wsdl:part>
+&lt;/wsdl:message>
+&lt;wsdl:portType name="BucketOrganizationPortType">
+    &lt;wsdl:operation name="merge">
+        &lt;wsdl:input message="tns:mergeRequest" name="mergeRequest">
+        &lt;/wsdl:input>
+        &lt;wsdl:output message="tns:mergeResponse" name="mergeResponse">
+        &lt;/wsdl:output>
+    &lt;/wsdl:operation>
+&lt;/wsdl:portType></pre>
+</body>
+</html>
