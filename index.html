@@ -78,7 +78,33 @@
 
     <div class="question-header">Question 3: JAXB Serialization</div>
     <pre>package q4;
-@XmlAccessorType(XmlAccessType.FIELD)</pre>
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
+class Student{
+	private String name;
+	private int age;
+	Student() {}
+	Student(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+	
+	private static final String JAXB_PATH = "Student.xml";
+	
+	public static void main(String[] args) {
+		Student student1 = new Student("Tom", 20);
+		FileOutputStream outputStream = new FileOutputStream(JAXB_PATH);
+		JAXBContext jAXBContext = JAXBContext.newInstance(Student.class);
+		Marshaller m = jAXBContext.createMarshaller();
+		m.marshal(student1, outputStream);
+		outputStream.close();
+		FileInputStream inputSteam = new FileOutputStream(JAXB_PATH);
+		Unmarshaller u = jAXBContext.createUnmarshaller();
+		Student student2 = (Student) u.unmarshal(inputStream);
+		inputStream.close();
+		System.out.println("Name: " + student2.name + ", Age: " + student2.age);
+	}
+}</pre>
 
     <div class="question-header">Question 4: XML Schema</div>
     <pre>&lt;complexType name = "student">
@@ -126,48 +152,6 @@ class Employees{
         String jsonString = mapper.writeValueAsString(employees);
         System.out.println(jsonString);
     }
-}</pre>
-
-    <div class="solution-header">Solution2:</div>
-    <pre>package q6;
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-class Employee {
-    private String firstName, lastName;
-    Employee(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-}
-
-package q6;
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-class Employees{
-    private static Employee[] employees;</pre>
-
-    <div class="question-header">XML Root Element Example</div>
-    <pre>@XmlRootElement
-class Student{
-    private String name;
-    private int age;
-    Student(){}
-    Student(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-}
-private static final String JAXB_PATH = "Student.xml";
-public static void main(String[] args) throws JAXBException, IOException {
-    Student student1 = new Student("Tom", 20);
-    FileOutputStream outputStream = new FileOutputStream(JAXB_PATH);
-    JAXBContext jAXBContext = JAXBContext.newInstance(Student.class);
-    Marshaller m = jAXBContext.createMarshaller();
-    m.marshal(student1, outputStream);
-    outputStream.close();
-    FileInputStream inputStream = new FileInputStream(JAXB_PATH);
-    Unmarshaller u = jAXBContext.createUnmarshaller();
-    Student student2 = (Student) u.unmarshal(inputStream);
-    inputStream.close();
-    System.out.println("Name = " + student2.name + ", age = " + student2.age);
 }</pre>
 
     <div class="question-header">Question 6: RESTful Web Services</div>
